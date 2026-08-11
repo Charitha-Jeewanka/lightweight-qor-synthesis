@@ -1,0 +1,36 @@
+# Environments
+.venv/
+env/
+venv/
+
+# MLflow
+mlruns/
+mlartifacts/
+
+# Python cache & build
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.pytest_cache/
+*.egg-info/
+dist/
+build/
+
+# IDE & OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Temporary artifacts (Parquet predictions before MLflow logging)
+tmp/
+
+# Data outputs that shouldn't be versioned (raw datasets stay, but processed/cache can be large)
+data/processed/graphs/
+*.npz
+
+# misc
+GEMINI.md
+docs/
+EFPL/

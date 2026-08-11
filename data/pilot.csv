@@ -1,0 +1,45 @@
+run_id,category,circuit,seq_type,seq_len,seq_str,init_and,init_lev,final_and,final_lev,runtime_s
+8bf0e5b139f5,arithmetic,adder,reference,6,balance; rewrite; rewrite -z; balance; rewrite -z; balance,1020,255,1020,255,0.059
+ed4f2f8ee59e,arithmetic,adder,reference,10,balance; rewrite; refactor; balance; rewrite; rewrite -z; balance; refactor -z; rewrite -z; balance,1020,255,1019,255,0.0438
+a8fc8f78eb03,arithmetic,adder,random,10,rewrite; balance; refactor -z; refactor; refactor; rewrite -z; rewrite; rewrite; resub -z; balance,1020,255,893,255,0.0417
+795be056cdf2,arithmetic,adder,random,10,balance; rewrite; refactor; refactor; balance; refactor; resub -z; refactor; dc2; refactor -z,1020,255,893,255,0.0494
+3589793e85c1,arithmetic,adder,random,10,balance; rewrite -z; resub -z; resub; refactor -z; rewrite -z; refactor; resub; rewrite; rewrite,1020,255,893,255,0.0451
+07afcaff3dd9,arithmetic,adder,random,10,resub -z; rewrite; resub; resub; refactor -z; balance; dc2; rewrite; resub -z; rewrite,1020,255,893,255,0.0475
+f9af38771bb0,arithmetic,adder,random,10,refactor -z; resub; refactor; rewrite; balance; refactor; refactor -z; rewrite; refactor; rewrite,1020,255,1017,255,0.0417
+96510aaead63,arithmetic,adder,random,10,resub -z; refactor -z; dc2; resub; rewrite -z; resub; resub; refactor; refactor -z; rewrite,1020,255,893,255,0.0505
+f8a6b6bb51a7,arithmetic,adder,random,10,rewrite -z; refactor; rewrite -z; dc2; resub -z; refactor -z; refactor; resub; balance; refactor,1020,255,897,255,0.0505
+724fffa84f97,arithmetic,adder,random,10,balance; resub; resub -z; refactor -z; rewrite; refactor; resub; refactor; dc2; resub -z,1020,255,893,255,0.0489
+d66279d3a3c8,arithmetic,adder,random,10,dc2; rewrite -z; refactor -z; rewrite -z; refactor; refactor -z; resub -z; resub -z; resub; refactor,1020,255,1017,255,0.0504
+880ab2a2604d,arithmetic,adder,random,10,rewrite -z; dc2; rewrite; balance; rewrite; rewrite -z; rewrite -z; resub -z; rewrite; resub -z,1020,255,1018,255,0.0527
+a44b5b3411f1,arithmetic,adder,random,10,resub -z; dc2; refactor -z; balance; rewrite; refactor -z; resub; rewrite; refactor -z; resub -z,1020,255,893,255,0.0506
+466b1298d4eb,arithmetic,adder,random,10,rewrite -z; dc2; balance; refactor -z; rewrite -z; rewrite; refactor -z; refactor; rewrite -z; resub,1020,255,893,255,0.0518
+71ad29d58261,arithmetic,adder,random,10,rewrite -z; balance; resub; dc2; balance; rewrite; resub; refactor -z; refactor; balance,1020,255,893,255,0.0478
+f2ae5c531286,arithmetic,adder,random,10,refactor; rewrite; rewrite; dc2; rewrite; rewrite -z; rewrite -z; dc2; rewrite -z; refactor -z,1020,255,1019,255,0.0608
+0228f2b80927,arithmetic,adder,random,10,resub -z; refactor; refactor; refactor -z; resub -z; resub; dc2; dc2; rewrite; refactor,1020,255,893,255,0.0571
+660fc09f3a6b,arithmetic,adder,random,10,refactor; rewrite; resub; balance; refactor; refactor; balance; rewrite; balance; refactor,1020,255,893,255,0.0434
+a4e95d398df2,arithmetic,adder,random,10,rewrite; balance; resub; rewrite; refactor; refactor -z; dc2; refactor; rewrite -z; dc2,1020,255,893,255,0.0568
+5fb1f09128c0,arithmetic,adder,random,10,refactor; dc2; resub -z; refactor; rewrite; rewrite; resub -z; resub; resub -z; resub -z,1020,255,1017,255,0.0494
+7d93c728ca63,arithmetic,adder,random,10,dc2; balance; rewrite; balance; resub -z; resub; rewrite; refactor; refactor; refactor,1020,255,1017,255,0.0475
+246f0ad414db,arithmetic,adder,random,10,dc2; rewrite -z; resub -z; rewrite -z; refactor -z; dc2; refactor; rewrite; dc2; rewrite,1020,255,893,255,0.0681
+1e684b7a87b8,arithmetic,bar,reference,6,balance; rewrite; rewrite -z; balance; rewrite -z; balance,3336,12,3141,12,0.0496
+4d5d76a9a3b1,arithmetic,bar,reference,10,balance; rewrite; refactor; balance; rewrite; rewrite -z; balance; refactor -z; rewrite -z; balance,3336,12,3141,12,0.0586
+e690a6e57314,arithmetic,bar,random,10,balance; balance; rewrite; refactor; rewrite -z; resub -z; dc2; dc2; refactor; resub -z,3336,12,2952,14,0.1152
+46ba3546546c,arithmetic,bar,random,10,balance; rewrite -z; resub -z; balance; resub -z; refactor -z; dc2; refactor -z; resub -z; dc2,3336,12,2952,14,0.1163
+f479a7067b63,arithmetic,bar,random,10,rewrite -z; refactor; refactor -z; refactor; balance; balance; resub; balance; balance; dc2,3336,12,2952,14,0.0819
+ebe1ee0375d4,arithmetic,bar,random,10,rewrite -z; balance; rewrite; rewrite -z; rewrite; rewrite; refactor; resub -z; rewrite; refactor,3336,12,3141,12,0.0715
+b0af0d8e785b,arithmetic,bar,random,10,balance; rewrite; resub -z; resub; refactor -z; refactor; resub; refactor; refactor -z; resub -z,3336,12,3141,12,0.0638
+7803c5dd68e7,arithmetic,bar,random,10,rewrite -z; refactor -z; dc2; resub; rewrite; balance; dc2; rewrite; rewrite; refactor,3336,12,2952,14,0.1208
+a1038ac9a304,arithmetic,bar,random,10,refactor -z; rewrite -z; resub; rewrite; refactor; resub; refactor -z; rewrite -z; dc2; refactor -z,3336,12,2952,12,0.0983
+f5b79506d1a1,arithmetic,bar,random,10,balance; refactor -z; rewrite; rewrite -z; refactor -z; rewrite; rewrite; rewrite -z; refactor -z; refactor -z,3336,12,3141,12,0.0714
+406e74605d61,arithmetic,bar,random,10,refactor; resub; refactor; refactor -z; dc2; refactor -z; balance; rewrite; resub -z; refactor -z,3336,12,2952,12,0.0925
+29749a558801,arithmetic,bar,random,10,balance; balance; resub; rewrite -z; refactor -z; rewrite -z; dc2; resub -z; balance; rewrite,3336,12,2952,12,0.0856
+c7b019225b6f,arithmetic,bar,random,10,rewrite; rewrite -z; balance; resub; rewrite -z; resub -z; rewrite -z; balance; refactor -z; resub,3336,12,3141,12,0.0641
+91e25f84df62,arithmetic,bar,random,10,balance; resub; refactor; refactor; rewrite; resub; resub -z; rewrite -z; refactor; rewrite -z,3336,12,3141,12,0.0653
+c278361cde23,arithmetic,bar,random,10,rewrite -z; resub -z; balance; rewrite -z; resub; resub -z; refactor; refactor -z; rewrite -z; rewrite,3336,12,3141,12,0.0683
+c2304fbee27d,arithmetic,bar,random,10,resub -z; balance; dc2; refactor; refactor; dc2; resub; refactor -z; refactor; refactor,3336,12,2952,12,0.104
+6b338e5cb36c,arithmetic,bar,random,10,balance; refactor; resub -z; resub; refactor -z; rewrite; refactor -z; resub; resub -z; resub,3336,12,3141,12,0.0616
+11296545f9e2,arithmetic,bar,random,10,balance; rewrite; refactor -z; rewrite -z; refactor -z; balance; rewrite; resub -z; resub; resub,3336,12,3141,12,0.0622
+1ae8fd5aac92,arithmetic,bar,random,10,resub -z; rewrite; resub -z; refactor; refactor -z; balance; resub -z; balance; refactor; resub,3336,12,3141,12,0.0599
+793a7e6ccd43,arithmetic,bar,random,10,resub -z; rewrite; resub; resub; rewrite; refactor -z; refactor -z; resub -z; resub; resub -z,3336,12,3141,12,0.0647
+05b77e86ebb8,arithmetic,bar,random,10,refactor -z; rewrite -z; refactor; resub -z; resub -z; rewrite -z; refactor -z; resub -z; balance; refactor -z,3336,12,3141,12,0.0654
+7438098e5957,arithmetic,bar,random,10,refactor -z; refactor; resub -z; resub; dc2; dc2; dc2; refactor; dc2; rewrite -z,3336,12,2952,14,0.1751

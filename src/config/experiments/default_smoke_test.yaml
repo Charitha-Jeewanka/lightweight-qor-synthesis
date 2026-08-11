@@ -1,0 +1,13 @@
+# Smoke test configuration
+model_family: "dummy"
+dataset_L: 10
+target: "target_and_ratio"
+encoding: "all"
+structural_features: false
+split_protocol: "random"
+exclude_hyp: true
+seed: 42
+max_graph_nodes: 250000
+experiment_name: "qor-smoke-test"
+model_params:
+  dummy_param: 1.0

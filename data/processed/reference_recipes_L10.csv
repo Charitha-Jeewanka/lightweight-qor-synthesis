@@ -1,0 +1,41 @@
+run_id,category,circuit,seq_type,seq_len,seq_str,init_and,init_lev,final_and,final_lev,runtime_s
+8bf0e5b139f5,arithmetic,adder,reference,6,balance; rewrite; rewrite -z; balance; rewrite -z; balance,1020,255,1020,255,0.0587
+ed4f2f8ee59e,arithmetic,adder,reference,10,balance; rewrite; refactor; balance; rewrite; rewrite -z; balance; refactor -z; rewrite -z; balance,1020,255,1019,255,0.0429
+1e684b7a87b8,arithmetic,bar,reference,6,balance; rewrite; rewrite -z; balance; rewrite -z; balance,3336,12,3141,12,0.0541
+4d5d76a9a3b1,arithmetic,bar,reference,10,balance; rewrite; refactor; balance; rewrite; rewrite -z; balance; refactor -z; rewrite -z; balance,3336,12,3141,12,0.0597
+73edb819d6a0,arithmetic,div,reference,6,balance; rewrite; rewrite -z; balance; rewrite -z; balance,57247,4372,40889,4359,0.9419
+fe47ce1fe728,arithmetic,div,reference,10,balance; rewrite; refactor; balance; rewrite; rewrite -z; balance; refactor -z; rewrite -z; balance,57247,4372,40772,4361,1.3042
+f3a985c36819,arithmetic,hyp,reference,6,balance; rewrite; rewrite -z; balance; rewrite -z; balance,214335,24801,214240,24801,13.9578
+a0f7c729efde,arithmetic,hyp,reference,10,balance; rewrite; refactor; balance; rewrite; rewrite -z; balance; refactor -z; rewrite -z; balance,214335,24801,211330,24794,20.2327
+2d41b2aae03f,arithmetic,log2,reference,6,balance; rewrite; rewrite -z; balance; rewrite -z; balance,32060,444,30210,377,0.8093
+fa0ea6c89ca2,arithmetic,log2,reference,10,balance; rewrite; refactor; balance; rewrite; rewrite -z; balance; refactor -z; rewrite -z; balance,32060,444,29370,376,1.4251
+e12eea369fbc,arithmetic,max,reference,6,balance; rewrite; rewrite -z; balance; rewrite -z; balance,2865,287,2861,209,0.0575
+51ee2fecb7b0,arithmetic,max,reference,10,balance; rewrite; refactor; balance; rewrite; rewrite -z; balance; refactor -z; rewrite -z; balance,2865,287,2834,204,0.0723
+93573e09e445,arithmetic,multiplier,reference,6,balance; rewrite; rewrite -z; balance; rewrite -z; balance,27062,274,25200,263,0.4265
+5214e6a5f062,arithmetic,multiplier,reference,10,balance; rewrite; refactor; balance; rewrite; rewrite -z; balance; refactor -z; rewrite -z; balance,27062,274,24556,262,1.0299
+7e91a52aa008,arithmetic,sin,reference,6,balance; rewrite; rewrite -z; balance; rewrite -z; balance,5416,225,5127,179,0.1384
+4cbc2a5faf9a,arithmetic,sin,reference,10,balance; rewrite; refactor; balance; rewrite; rewrite -z; balance; refactor -z; rewrite -z; balance,5416,225,5039,177,0.2221
+8035bde59b30,arithmetic,sqrt,reference,6,balance; rewrite; rewrite -z; balance; rewrite -z; balance,24618,5058,19437,5058,0.66
+0ebc031210c0,arithmetic,sqrt,reference,10,balance; rewrite; refactor; balance; rewrite; rewrite -z; balance; refactor -z; rewrite -z; balance,24618,5058,19437,4968,1.0638
+d8c32a1d4fe1,arithmetic,square,reference,6,balance; rewrite; rewrite -z; balance; rewrite -z; balance,18484,250,16914,248,0.3057
+d743cee6d881,arithmetic,square,reference,10,balance; rewrite; refactor; balance; rewrite; rewrite -z; balance; refactor -z; rewrite -z; balance,18484,250,16623,248,0.8107
+82ac1485562d,random_control,arbiter,reference,6,balance; rewrite; rewrite -z; balance; rewrite -z; balance,11839,87,11839,87,0.1163
+8d1abc50aa74,random_control,arbiter,reference,10,balance; rewrite; refactor; balance; rewrite; rewrite -z; balance; refactor -z; rewrite -z; balance,11839,87,11839,87,0.2125
+85549512ed53,random_control,cavlc,reference,6,balance; rewrite; rewrite -z; balance; rewrite -z; balance,693,16,671,16,0.0411
+488e235c4f64,random_control,cavlc,reference,10,balance; rewrite; refactor; balance; rewrite; rewrite -z; balance; refactor -z; rewrite -z; balance,693,16,662,16,0.0411
+eff176d7aa5f,random_control,ctrl,reference,6,balance; rewrite; rewrite -z; balance; rewrite -z; balance,174,10,123,10,0.0356
+21a6f28632d9,random_control,ctrl,reference,10,balance; rewrite; refactor; balance; rewrite; rewrite -z; balance; refactor -z; rewrite -z; balance,174,10,108,8,0.0338
+c6b48ba44a1b,random_control,dec,reference,6,balance; rewrite; rewrite -z; balance; rewrite -z; balance,304,3,304,3,0.0362
+0db314be7bc3,random_control,dec,reference,10,balance; rewrite; refactor; balance; rewrite; rewrite -z; balance; refactor -z; rewrite -z; balance,304,3,304,3,0.0354
+ea7f7b0ee238,random_control,i2c,reference,6,balance; rewrite; rewrite -z; balance; rewrite -z; balance,1342,20,1184,16,0.0445
+d58445878f43,random_control,i2c,reference,10,balance; rewrite; refactor; balance; rewrite; rewrite -z; balance; refactor -z; rewrite -z; balance,1342,20,1162,15,0.0474
+9075a873a81b,random_control,int2float,reference,6,balance; rewrite; rewrite -z; balance; rewrite -z; balance,260,16,217,15,0.0384
+37b7943b943e,random_control,int2float,reference,10,balance; rewrite; refactor; balance; rewrite; rewrite -z; balance; refactor -z; rewrite -z; balance,260,16,214,15,0.036
+909f2554f68a,random_control,mem_ctrl,reference,6,balance; rewrite; rewrite -z; balance; rewrite -z; balance,46836,114,46611,111,0.5119
+59d1426e8499,random_control,mem_ctrl,reference,10,balance; rewrite; refactor; balance; rewrite; rewrite -z; balance; refactor -z; rewrite -z; balance,46836,114,45614,110,0.8984
+62604e5ff805,random_control,priority,reference,6,balance; rewrite; rewrite -z; balance; rewrite -z; balance,978,250,810,239,0.0441
+7b74b062bd94,random_control,priority,reference,10,balance; rewrite; refactor; balance; rewrite; rewrite -z; balance; refactor -z; rewrite -z; balance,978,250,676,203,0.0446
+a4dae57d9fd1,random_control,router,reference,6,balance; rewrite; rewrite -z; balance; rewrite -z; balance,257,54,241,26,0.0365
+3b0e53cdc09d,random_control,router,reference,10,balance; rewrite; refactor; balance; rewrite; rewrite -z; balance; refactor -z; rewrite -z; balance,257,54,177,19,0.0362
+38f85deaae15,random_control,voter,reference,6,balance; rewrite; rewrite -z; balance; rewrite -z; balance,13758,70,10446,58,0.2072
+5b9e4ae2d6c0,random_control,voter,reference,10,balance; rewrite; refactor; balance; rewrite; rewrite -z; balance; refactor -z; rewrite -z; balance,13758,70,9756,57,0.5157

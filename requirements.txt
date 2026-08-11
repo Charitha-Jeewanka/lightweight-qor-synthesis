@@ -1,0 +1,43 @@
+# Modeling-phase dependencies
+# Target: Windows, Python 3.11, RTX 3050 Laptop (6 GB, sm_86), CUDA driver 13.1
+#
+# Install:
+#   uv venv --python 3.11
+#   .venv\Scripts\activate
+#   uv pip install -r requirements.txt
+#
+# Verify CUDA afterwards:
+#   python -c "import torch; print(torch.__version__, torch.cuda.is_available())"
+#   -> must print a version containing '+cu126' and 'True'
+#
+# NOTE: torch-scatter / torch-sparse are deliberately NOT included. Modern
+# torch-geometric does not require them for GCN/GIN, and their Windows wheels
+# are a frequent source of build failures.
+
+--extra-index-url https://download.pytorch.org/whl/cu126
+
+# --- deep learning ---
+torch==2.6.0+cu126
+torch-geometric==2.6.1
+
+# --- gradient-boosted trees ---
+xgboost==2.1.3
+lightgbm==4.5.0
+
+# --- core numeric / data ---
+numpy==2.1.3
+pandas==2.2.3
+scipy==1.14.1
+scikit-learn==1.5.2
+pyarrow==18.1.0
+
+# --- experiment tracking ---
+mlflow==2.19.0
+
+# --- config, profiling, plotting ---
+pyyaml==6.0.2
+psutil==6.1.0
+matplotlib==3.9.3
+
+# --- testing ---
+pytest==8.3.4
