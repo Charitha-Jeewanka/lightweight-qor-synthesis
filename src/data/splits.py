@@ -57,15 +57,7 @@ def resolve_random_split(
     df: pd.DataFrame,
     exclude_hyp: bool = False,
 ) -> SplitResult:
-    """Resolves the fixed random split (train/val/test) from the modeling table.
-
-    Args:
-        df: cleaned modeling table DataFrame
-        exclude_hyp: whether to exclude 'hyp' circuit from all splits
-
-    Returns:
-        SplitResult containing row index arrays and circuit sets
-    """
+    """Resolves the fixed random split (train/val/test) from the modeling table."""
     if "split_random" not in df.columns:
         raise ValueError("DataFrame missing required 'split_random' column.")
 
@@ -103,17 +95,19 @@ def resolve_random_split(
 def resolve_loco_folds(
     df: pd.DataFrame,
     exclude_hyp: bool = True,
+    include_val_fold: bool = False,
 ) -> List[SplitResult]:
     """Resolves 5 leave-circuits-out (LOCO) cross-validation folds.
 
-    For fold k:
+    For outer fold k:
       - Test circuits: fold == k
-      - Val circuits: fold == (k + 1) % 5
-      - Train circuits: remaining folds != k and != (k + 1) % 5
+      - Train circuits: fold != k (all remaining 4 folds, 15-16 circuits)
+      - Val circuits: empty (or fold == (k + 1) % 5 if include_val_fold is True)
 
     Args:
         df: cleaned modeling table DataFrame
         exclude_hyp: whether to exclude 'hyp' circuit (default True per §4.2)
+        include_val_fold: whether to separate an inner validation fold for hyperparameter selection
 
     Returns:
         List of 5 SplitResult objects, one per outer fold
@@ -129,18 +123,22 @@ def resolve_loco_folds(
         base_mask = base_mask & (df["circuit"] != "hyp").to_numpy()
 
     for fold_k in range(5):
-        val_fold_idx = (fold_k + 1) % 5
-
         test_mask = base_mask & (df["fold"] == fold_k).to_numpy()
-        val_mask = base_mask & (df["fold"] == val_fold_idx).to_numpy()
-        train_mask = base_mask & (~(df["fold"].isin([fold_k, val_fold_idx]))).to_numpy()
+
+        if include_val_fold:
+            val_fold_idx = (fold_k + 1) % 5
+            val_mask = base_mask & (df["fold"] == val_fold_idx).to_numpy()
+            train_mask = base_mask & (~(df["fold"].isin([fold_k, val_fold_idx]))).to_numpy()
+        else:
+            val_mask = np.zeros(len(df), dtype=bool)
+            train_mask = base_mask & (df["fold"] != fold_k).to_numpy()
 
         train_idx = indices[train_mask]
         val_idx = indices[val_mask]
         test_idx = indices[test_mask]
 
         train_circuits = set(df.iloc[train_idx]["circuit"].unique())
-        val_circuits = set(df.iloc[val_idx]["circuit"].unique())
+        val_circuits = set(df.iloc[val_idx]["circuit"].unique()) if len(val_idx) > 0 else set()
         test_circuits = set(df.iloc[test_idx]["circuit"].unique())
 
         result = SplitResult(
@@ -157,10 +155,18 @@ def resolve_loco_folds(
         result.assert_disjoint_circuits()
         result.assert_disjoint_row_indices()
 
+        total_circuits = len(train_circuits) + len(val_circuits) + len(test_circuits)
+        expected_total = 19 if exclude_hyp else 20
+        if total_circuits != expected_total:
+            raise RuntimeError(
+                f"Circuit count discrepancy in fold {fold_k}: "
+                f"Total circuits = {total_circuits} (expected {expected_total})"
+            )
+
         folds_results.append(result)
 
     logger.info(
-        f"Resolved {len(folds_results)} LOCO folds (exclude_hyp={exclude_hyp}). "
+        f"Resolved {len(folds_results)} LOCO folds (exclude_hyp={exclude_hyp}, include_val_fold={include_val_fold}). "
         "All disjointness assertions passed."
     )
     return folds_results

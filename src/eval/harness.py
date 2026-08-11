@@ -17,6 +17,7 @@ from src.data.splits import SplitResult, resolve_loco_folds, resolve_random_spli
 from src.eval.metrics import evaluate_all_metrics
 from src.eval.profiling import PeakMemoryTracker, Timer, measure_inference_latency
 from src.models.base import BaseQoRModel
+from src.models.baselines import PerCircuitMeanBaseline
 from src.tracking.mlflow_utils import (
     end_run,
     init_mlflow,
@@ -26,7 +27,7 @@ from src.tracking.mlflow_utils import (
     start_run,
 )
 from src.utils.logging_utils import get_logger
-from src.utils.paths import get_project_root
+from src.utils.paths import get_git_commit_hash, get_project_root
 
 logger = get_logger(__name__)
 
@@ -52,9 +53,15 @@ def run_single_split(
 
     val_data = (X_val, y_val) if len(X_val) > 0 else None
 
+    train_circuits = dataset.df.iloc[split.train_indices]["circuit"].to_numpy()
+    test_circuits_arr = dataset.df.iloc[split.test_indices]["circuit"].to_numpy()
+
     # Profile training
     with Timer() as timer, PeakMemoryTracker() as mem_tracker:
-        model.fit(X_train, y_train, val_data=val_data)
+        if isinstance(model, PerCircuitMeanBaseline):
+            model.fit(X_train, y_train, val_data=val_data, circuits_train=train_circuits)
+        else:
+            model.fit(X_train, y_train, val_data=val_data)
 
     train_time_s = timer.elapsed_s
 
@@ -63,10 +70,12 @@ def run_single_split(
     inference_latency_ms = measure_inference_latency(model, latency_sample, n_samples=1000)
 
     # Predict on test
-    y_pred_test = model.predict(X_test)
+    if isinstance(model, PerCircuitMeanBaseline):
+        y_pred_test = model.predict(X_test, circuits_test=test_circuits_arr)
+    else:
+        y_pred_test = model.predict(X_test)
 
     # Compute metrics
-    test_circuits_arr = dataset.df.iloc[split.test_indices]["circuit"].to_numpy()
     metrics = evaluate_all_metrics(y_test, y_pred_test, test_circuits_arr)
 
     # Log efficiency metrics
@@ -117,7 +126,7 @@ def run_experiment(
         "exclude_hyp": config.exclude_hyp,
         "seed": config.seed,
         "config_hash": config.compute_config_hash(),
-        "git_commit": "N/A",  # can be expanded with git revision
+        "git_commit": get_git_commit_hash(),
     }
     params_to_log.update(model.get_params())
     params_to_log.update({f"config_{k}": v for k, v in config.model_params.items()})
@@ -126,7 +135,7 @@ def run_experiment(
 
     parent_run = start_run(
         run_name=run_name,
-        tags={"rq": "eval_harness", "phase": "phase_1", "status": "running"},
+        tags={"rq": "eval_harness", "phase": "phase_2", "status": "running"},
     )
 
     try:
@@ -145,24 +154,44 @@ def run_experiment(
         for split in splits:
             logger.info(f"Executing split/fold {split.fold_idx}...")
 
-            # Log fold sizes on first fold
+            # Log fold sizes on first fold for parent run
             if split.fold_idx == 0:
                 log_params(
                     {
                         "n_train_rows": len(split.train_indices),
                         "n_test_rows": len(split.test_indices),
+                        "n_val_rows": len(split.val_indices),
                         "n_train_circuits": len(split.train_circuits),
                         "n_test_circuits": len(split.test_circuits),
+                        "n_val_circuits": len(split.val_circuits),
                     }
                 )
 
             # Optional child run for LOCO folds
             if config.split_protocol == "loco":
+                test_circs_str = ",".join(sorted(split.test_circuits))
+                train_circs_str = ",".join(sorted(split.train_circuits))
+
                 with start_run(
                     run_name=f"{run_name}_fold_{split.fold_idx}",
                     nested=True,
-                    tags={"fold": str(split.fold_idx)},
+                    tags={
+                        "fold": str(split.fold_idx),
+                        "test_circuits": test_circs_str,
+                    },
                 ):
+                    log_params(
+                        {
+                            "n_train_rows": len(split.train_indices),
+                            "n_test_rows": len(split.test_indices),
+                            "n_val_rows": len(split.val_indices),
+                            "n_train_circuits": len(split.train_circuits),
+                            "n_test_circuits": len(split.test_circuits),
+                            "n_val_circuits": len(split.val_circuits),
+                            "test_circuits": test_circs_str,
+                            "train_circuits": train_circs_str,
+                        }
+                    )
                     fold_metrics, pred_df = run_single_split(model, dataset, split, config)
                     log_metrics(fold_metrics)
             else:
