@@ -17,6 +17,7 @@ VALID_MODEL_FAMILIES = {
     "mlp",
     "gcn",
     "gin",
+    "gnn",
     "dummy",
 }
 

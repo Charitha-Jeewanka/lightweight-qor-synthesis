@@ -19,7 +19,9 @@ from src.eval.profiling import PeakMemoryTracker, Timer, measure_inference_laten
 from src.models.base import BaseQoRModel
 from src.models.baselines import PerCircuitMeanBaseline
 from src.tracking.mlflow_utils import (
+    check_run_exists_by_hash,
     end_run,
+    get_run_by_hash,
     init_mlflow,
     log_artifact,
     log_metrics,
@@ -54,12 +56,15 @@ def run_single_split(
     val_data = (X_val, y_val) if len(X_val) > 0 else None
 
     train_circuits = dataset.df.iloc[split.train_indices]["circuit"].to_numpy()
+    val_circuits = dataset.df.iloc[split.val_indices]["circuit"].to_numpy() if len(split.val_indices) > 0 else None
     test_circuits_arr = dataset.df.iloc[split.test_indices]["circuit"].to_numpy()
 
     # Profile training
     with Timer() as timer, PeakMemoryTracker() as mem_tracker:
         if isinstance(model, PerCircuitMeanBaseline):
             model.fit(X_train, y_train, val_data=val_data, circuits_train=train_circuits)
+        elif hasattr(model, "fit") and "circuits_train" in model.fit.__code__.co_varnames:
+            model.fit(X_train, y_train, val_data=val_data, circuits_train=train_circuits, circuits_val=val_circuits)
         else:
             model.fit(X_train, y_train, val_data=val_data)
 
@@ -71,6 +76,8 @@ def run_single_split(
 
     # Predict on test
     if isinstance(model, PerCircuitMeanBaseline):
+        y_pred_test = model.predict(X_test, circuits_test=test_circuits_arr)
+    elif hasattr(model, "predict") and "circuits_test" in model.predict.__code__.co_varnames:
         y_pred_test = model.predict(X_test, circuits_test=test_circuits_arr)
     else:
         y_pred_test = model.predict(X_test)
@@ -115,6 +122,18 @@ def run_experiment(
     config.validate()
     exp_id = init_mlflow(config.experiment_name)
 
+    config_hash = config.compute_config_hash()
+    existing_run = get_run_by_hash(config_hash, experiment_name=config.experiment_name)
+    if existing_run is not None and existing_run.info.status == "FINISHED":
+        logger.info(f"Skipping already-completed run (config_hash={config_hash[:8]}, run_id={existing_run.info.run_id})")
+        metrics = {k: float(v) for k, v in existing_run.data.metrics.items()}
+        return {
+            "run_id": existing_run.info.run_id,
+            "metrics": metrics,
+            "predictions_path": None,
+            "status": "SKIPPED_EXISTING",
+        }
+
     # Build mandatory parameters dict per §9
     params_to_log: Dict[str, Any] = {
         "model_family": config.model_family,
@@ -125,7 +144,7 @@ def run_experiment(
         "split_protocol": config.split_protocol,
         "exclude_hyp": config.exclude_hyp,
         "seed": config.seed,
-        "config_hash": config.compute_config_hash(),
+        "config_hash": config_hash,
         "git_commit": get_git_commit_hash(),
     }
     params_to_log.update(model.get_params())

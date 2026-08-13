@@ -99,3 +99,28 @@ def end_run(status: str = "FINISHED") -> None:
     """Ends the current active MLflow run."""
     if mlflow.active_run():
         mlflow.end_run(status=status)
+
+
+def check_run_exists_by_hash(config_hash: str, experiment_name: Optional[str] = None) -> bool:
+    """Checks if a completed MLflow run exists with the given config_hash."""
+    run = get_run_by_hash(config_hash, experiment_name=experiment_name)
+    return run is not None and run.info.status == "FINISHED"
+
+
+def get_run_by_hash(config_hash: str, experiment_name: Optional[str] = None) -> Optional[mlflow.entities.Run]:
+    """Retrieves an MLflow run by its logged config_hash parameter."""
+    if experiment_name:
+        exp = mlflow.get_experiment_by_name(experiment_name)
+        if not exp:
+            return None
+        exp_ids = [exp.experiment_id]
+    else:
+        exp_ids = None
+
+    filter_string = f"params.config_hash = '{config_hash}'"
+    runs = mlflow.search_runs(experiment_ids=exp_ids, filter_string=filter_string, output_format="list")
+    for r in runs:
+        if r.info.status == "FINISHED":
+            return r
+    return None
+
